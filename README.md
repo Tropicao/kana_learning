@@ -22,3 +22,29 @@ Once you lists are tuned, you can run the tool:
 - `./target/debug/kana_learning -k` to learn Katakanas
 
 The tool will display a random kana, and wait for your input, which must be the corresponding "mora" (a,i, u, e, o, ka, ki...). The tool will keep questioning you in an infinite loop
+
+## Example
+
+```
+➜  kana_training git:(main) ./target/debug/kana_learning
+=== Welcome to Kana training ===
+き
+ki
+✅
+け
+ke
+✅
+え
+e
+✅
+か
+ka
+✅
+か
+a
+❌ (a)
+か
+ka
+✅
+け
+```
