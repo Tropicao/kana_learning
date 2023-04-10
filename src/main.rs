@@ -50,10 +50,10 @@ fn main() -> Result<(), Box<dyn Error>> {
             answer.truncate(answer.len() - 1);
             match answer.cmp(&question.phonetic) {
                 std::cmp::Ordering::Equal => {
-                    println!("\u{2705}");
+                    println!("\u{2705}\n");
                     break;
                 }
-                _ => println!("\u{274c} ({})", answer),
+                _ => println!("\u{274c} ({})\n", answer),
             }
         }
     }
