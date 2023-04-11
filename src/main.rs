@@ -20,6 +20,7 @@ struct Game {
     charset: Vec<Kana>,
     pool: Vec<Kana>,
     score: usize,
+    rounds: usize
 }
 
 impl Game {
@@ -48,6 +49,7 @@ impl Game {
         if let Some(question) = self.pool.pop() {
             let mut first_try = true;
             loop {
+                self.rounds += 1;
                 let mut answer = String::new();
                 println!("{}", question.unicode);
                 io::stdin().read_line(&mut answer).unwrap();
@@ -73,8 +75,8 @@ impl Game {
         self.score
     }
 
-    pub fn charset_size(&self) -> usize {
-        self.charset.len()
+    pub fn rounds(&self) -> usize {
+        self.rounds
     }
 }
 
@@ -112,6 +114,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     while game.has_questions() {
             game.ask();
     }
-    println!("Score: {}/{}", game.score(), game.charset_size());
+    println!("Score: {}/{}", game.score(), game.rounds());
     Ok(())
 }
