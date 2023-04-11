@@ -4,11 +4,12 @@ use serde::Deserialize;
 use std::error::Error;
 use std::fs::File;
 use std::io;
+use std::os::unix::thread;
 
 const DEFAULT_HIRAGANA_DICT: &str = "hiragana.csv";
 const DEFAULT_KATAKANA_DICT: &str = "katakana.csv";
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "PascalCase")]
 struct Katakana {
     unicode: char,
@@ -41,19 +42,27 @@ fn main() -> Result<(), Box<dyn Error>> {
     };
 
     let list = load_characters(&dict)?;
+
+    
     loop {
-        let question = list.choose(&mut rand::thread_rng()).unwrap();
-        loop {
-            let mut answer = String::new();
-            println!("{}", question.unicode);
-            io::stdin().read_line(&mut answer)?;
-            answer.truncate(answer.len() - 1);
-            match answer.cmp(&question.phonetic) {
-                std::cmp::Ordering::Equal => {
-                    println!("\u{2705}\n");
-                    break;
+        println!("Generating new quizz");
+        let mut pool = list.clone();
+        let mut rng = thread_rng();
+        pool.shuffle(&mut rng);
+        while !pool.is_empty() {
+            let question = pool.pop().unwrap();
+            loop {
+                let mut answer = String::new();
+                println!("{}", question.unicode);
+                io::stdin().read_line(&mut answer)?;
+                answer.truncate(answer.len() - 1);
+                match answer.cmp(&question.phonetic) {
+                    std::cmp::Ordering::Equal => {
+                        println!("\u{2705}\n");
+                        break;
+                    }
+                    _ => println!("\u{274c} ({})\n", answer),
                 }
-                _ => println!("\u{274c} ({})\n", answer),
             }
         }
     }
