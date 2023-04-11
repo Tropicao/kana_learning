@@ -5,10 +5,8 @@ use std::error::Error;
 use std::fs::File;
 use std::io;
 
-
 const DEFAULT_HIRAGANA_DICT: &str = "hiragana.csv";
 const DEFAULT_KATAKANA_DICT: &str = "katakana.csv";
-
 
 #[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "PascalCase")]
@@ -36,6 +34,10 @@ fn load_characters(filepath: &str) -> Result<Vec<Kana>, Box<dyn Error>> {
 
 fn main() -> Result<(), Box<dyn Error>> {
     println!("=== Welcome to Kana training ===");
+    println!("Type \"q\" at any time to quit");
+    println!("");
+
+    let mut run = true;
     let args = Args::parse();
     let dict = match args.katakana {
         true => DEFAULT_KATAKANA_DICT,
@@ -44,13 +46,12 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let list = load_characters(&dict)?;
 
-    
-    loop {
+    while run {
         println!("Generating new quizz");
         let mut pool = list.clone();
         let mut rng = thread_rng();
         pool.shuffle(&mut rng);
-        while !pool.is_empty() {
+        while !pool.is_empty() && run {
             let question = pool.pop().unwrap();
             loop {
                 let mut answer = String::new();
@@ -62,7 +63,14 @@ fn main() -> Result<(), Box<dyn Error>> {
                         println!("\u{2705}\n");
                         break;
                     }
-                    _ => println!("\u{274c} ({})\n", answer),
+                    _ => {
+                        if answer == "q" {
+                            run = false;
+                            break;
+                        } else {
+                            println!("\u{274c} ({})\n", answer)
+                        }
+                    }
                 }
             }
         }
