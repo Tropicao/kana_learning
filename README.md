@@ -21,30 +21,41 @@ Once you lists are tuned, you can run the tool:
 - `./target/debug/kana_learning` to learn Hiraganas
 - `./target/debug/kana_learning -k` to learn Katakanas
 
+By default the tool will test you with each character from the selected set, and display your score
+
+- you can also use the `-i` option to get into "infinite" mode.
+- youcan type `q` to quit current session
 The tool will display a random kana, and wait for your input, which must be the corresponding "mora" (a,i, u, e, o, ka, ki...). The tool will keep questioning you in an infinite loop
 
 ## Example
 
 ```
-➜  kana_training git:(main) ./target/debug/kana_learning
+➜  kana_training git:(main) ./target/debug/kana_learning -i
 === Welcome to Kana training ===
-き
-ki
+
+Generating new quizz
+さ
+sa
 ✅
-け
-ke
-✅
-え
-e
-✅
+
 か
 ka
 ✅
-か
-a
-❌ (a)
-か
-ka
+
+は
+ha
 ✅
-け
+
+む
+mo
+❌
+
+む
+mu
+✅
+
+ふ
+q
+Score: 3/4
+
 ```
