@@ -4,7 +4,7 @@ use serde::Deserialize;
 use std::error::Error;
 use std::fs::File;
 use std::io;
-use std::os::unix::thread;
+
 
 const DEFAULT_HIRAGANA_DICT: &str = "hiragana.csv";
 const DEFAULT_KATAKANA_DICT: &str = "katakana.csv";
