@@ -9,9 +9,10 @@ use std::os::unix::thread;
 const DEFAULT_HIRAGANA_DICT: &str = "hiragana.csv";
 const DEFAULT_KATAKANA_DICT: &str = "katakana.csv";
 
+
 #[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "PascalCase")]
-struct Katakana {
+struct Kana {
     unicode: char,
     phonetic: String,
 }
@@ -22,12 +23,12 @@ struct Args {
     katakana: bool,
 }
 
-fn load_characters(filepath: &str) -> Result<Vec<Katakana>, Box<dyn Error>> {
+fn load_characters(filepath: &str) -> Result<Vec<Kana>, Box<dyn Error>> {
     let file = File::open(filepath)?;
     let mut result = Vec::new();
     let mut rdr = csv::Reader::from_reader(file);
     for record in rdr.deserialize() {
-        let katakana: Katakana = record?;
+        let katakana: Kana = record?;
         result.push(katakana);
     }
     Ok(result)
